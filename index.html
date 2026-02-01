@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metallic Means: Consecutive Square Roots</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap');
+        
+        :root {
+            --bg: #fdfcfa;
+            --text: #1c1815;
+            --accent: #b85a00;
+            --accent-light: #d97226;
+            --silver: #7a8894;
+            --gold: #c5a047;
+            --bronze: #b5754e;
+            --border: #e6e1d8;
+            --card: #ffffff;
+            --subtle: #f7f4ef;
+            --shadow: rgba(28, 24, 21, 0.06);
+            --shadow-heavy: rgba(28, 24, 21, 0.12);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Libre Baskerville', serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.75;
+            font-size: 16px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 2rem 6rem;
+        }
+        
+        header {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 3px solid var(--accent);
+        }
+        
+        h1 {
+            font-size: 2.75rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.75rem;
+            color: var(--accent);
+            line-height: 1.1;
+        }
+        
+        .subtitle {
+            font-size: 1.15rem;
+            font-style: italic;
+            color: #6b5d52;
+            font-weight: 400;
+        }
+        
+        h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin: 2.5rem 0 1rem;
+            color: var(--accent);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+        
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: 1.5rem 0 0.75rem;
+            color: var(--accent-light);
+        }
+        
+        p {
+            margin: 1rem 0;
+        }
+        
+        .intro-box {
+            background: linear-gradient(135deg, var(--subtle) 0%, var(--card) 100%);
+            border-left: 5px solid var(--accent);
+            padding: 1.75rem;
+            margin: 2rem 0;
+            border-radius: 3px;
+            box-shadow: 0 2px 12px var(--shadow);
+        }
+        
+        .theorem {
+            background: var(--card);
+            border: 2px solid var(--accent);
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 4px;
+            box-shadow: 0 4px 20px var(--shadow-heavy);
+        }
+        
+        .theorem-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .formula-box {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--subtle);
+            padding: 1.25rem 1.5rem;
+            border-radius: 3px;
+            margin: 1rem 0;
+            font-size: 0.95rem;
+            border-left: 3px solid var(--accent);
+            overflow-x: auto;
+        }
+        
+        .proof-sketch {
+            background: #f9f7f3;
+            border-left: 4px solid var(--silver);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+        
+        .proof-sketch h4 {
+            color: var(--silver);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.75rem;
+        }
+        
+        .interactive-panel {
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 6px;
+            box-shadow: 0 6px 24px var(--shadow);
+        }
+        
+        .control-row {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            align-items: flex-end;
+        }
+        
+        .control {
+            flex: 1;
+            min-width: 180px;
+        }
+        
+        label {
+            display: block;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #6b5d52;
+            margin-bottom: 0.5rem;
+        }
+        
+        input[type="number"], input[type="range"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--border);
+            border-radius: 3px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            background: var(--subtle);
+            transition: all 0.2s;
+        }
+        
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: white;
+        }
+        
+        input[type="range"] {
+            padding: 0;
+            height: 8px;
+            background: linear-gradient(to right, var(--border), var(--accent));
+            border: none;
+            cursor: pointer;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--accent);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 6px var(--shadow-heavy);
+        }
+        
+        input[type="range"]::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            background: var(--accent);
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 6px var(--shadow-heavy);
+        }
+        
+        .range-value {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 1rem;
+            margin-top: 0.25rem;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            background: white;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px var(--shadow);
+        }
+        
+        th {
+            background: var(--accent);
+            color: white;
+            padding: 0.75rem 0.5rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        td {
+            padding: 0.75rem 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        tr.valid-row {
+            background: #fff9ed;
+        }
+        
+        tr:hover {
+            background: var(--subtle);
+        }
+        
+        tr.valid-row:hover {
+            background: #fff4d9;
+        }
+        
+        .check {
+            color: #28a745;
+            font-weight: 700;
+        }
+        
+        .cross {
+            color: #dc3545;
+        }
+        
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .result-item {
+            background: var(--subtle);
+            padding: 1rem;
+            border-radius: 3px;
+            border-left: 3px solid var(--accent-light);
+        }
+        
+        .result-label {
+            font-size: 0.8rem;
+            color: #6b5d52;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+        
+        .result-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            color: var(--accent);
+            font-weight: 600;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-left: 0.5rem;
+        }
+        
+        .valid {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .invalid {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .visualization-area {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+        }
+        
+        canvas {
+            width: 100%;
+            max-width: 100%;
+            height: 300px;
+            display: block;
+        }
+        
+        .note {
+            background: #fff9ed;
+            border-left: 4px solid var(--gold);
+            padding: 1.25rem;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+            border-radius: 3px;
+        }
+        
+        .example-grid {
+            display: grid;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .example-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 12px var(--shadow);
+        }
+        
+        .example-card h4 {
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+        
+        .metal-gold { border-left: 5px solid var(--gold); }
+        .metal-silver { border-left: 5px solid var(--silver); }
+        .metal-bronze { border-left: 5px solid var(--bronze); }
+        
+        .tag {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-right: 0.5rem;
+        }
+        
+        .tag-gold { background: rgba(197, 160, 71, 0.2); color: #8b7225; }
+        .tag-silver { background: rgba(122, 136, 148, 0.2); color: #4a5561; }
+        .tag-bronze { background: rgba(181, 117, 78, 0.2); color: #7d4f2e; }
+        
+        .cyclotomic-section {
+            background: linear-gradient(135deg, #f5f3ef 0%, #faf8f5 100%);
+            border: 2px solid var(--silver);
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 6px;
+        }
+        
+        .viz-caption {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #6b5d52;
+            margin-top: 1rem;
+            font-style: italic;
+        }
+        
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--subtle);
+            padding: 0.2rem 0.4rem;
+            border-radius: 2px;
+            font-size: 0.9em;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        .tab {
+            padding: 0.75rem 1.25rem;
+            background: none;
+            border: none;
+            font-family: 'Libre Baskerville', serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            color: #6b5d52;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+            margin-bottom: -2px;
+        }
+        
+        .tab:hover {
+            color: var(--accent);
+            background: var(--subtle);
+        }
+        
+        .tab.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+            background: var(--subtle);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Metallic Means and Consecutive Square Roots</h1>
+            <p class="subtitle">A parity phenomenon in quadratic units</p>
+        </header>
+
+        <section>
+            <h2>1. The Metallic Mean Family</h2>
+            
+            <div class="intro-box">
+                <p>The <strong>metallic means</strong> form a family of quadratic irrationals, each satisfying a characteristic equation:</p>
+                <div class="formula-box">
+x² - kx - 1 = 0    (k ∈ ℤ, k ≥ 1)
+                </div>
+                <p>The positive root is the metallic mean:</p>
+                <div class="formula-box">
+δₖ = (k + √(k² + 4)) / 2
+                </div>
+            </div>
+
+            <div class="example-grid">
+                <div class="example-card metal-gold">
+                    <h4><span class="tag tag-gold">k = 1</span> Golden Ratio φ</h4>
+                    <div class="formula-box">φ = (1 + √5)/2 ≈ 1.618034</div>
+                    <p>The most famous metallic mean, appearing in Fibonacci sequences, pentagons, and aesthetic proportions.</p>
+                </div>
+                
+                <div class="example-card metal-silver">
+                    <h4><span class="tag tag-silver">k = 2</span> Silver Ratio δ₂</h4>
+                    <div class="formula-box">δ₂ = 1 + √2 ≈ 2.414214</div>
+                    <p>Related to the octagon and paper sizes in the √2 series (A4, A3, etc.).</p>
+                </div>
+                
+                <div class="example-card metal-bronze">
+                    <h4><span class="tag tag-bronze">k = 3</span> Bronze Ratio δ₃</h4>
+                    <div class="formula-box">δ₃ = (3 + √13)/2 ≈ 3.302776</div>
+                    <p>Appears in certain fractal and tiling constructions.</p>
+                </div>
+            </div>
+
+            <p>All metallic means share the property <code>δₖ > 1</code>, so their reciprocals <code>0 < δₖ⁻¹ < 1</code> decay toward zero as we take successive powers.</p>
+        </section>
+
+        <section>
+            <h2>2. The Pattern: Explore First</h2>
+            
+            <p>Before diving into theory, let's observe the phenomenon directly. For any metallic mean δₖ, we ask: when can the power <code>δₖ⁻ⁿ</code> be written as a difference of square roots of <em>consecutive</em> integers?</p>
+            
+            <div class="interactive-panel">
+                <div class="control-row">
+                    <div class="control">
+                        <label for="seq-k">Parameter k</label>
+                        <input type="number" id="seq-k" min="1" max="10" value="2" oninput="generateSequence()">
+                    </div>
+                    <div class="control">
+                        <label for="seq-terms">Number of terms</label>
+                        <input type="range" id="seq-terms" min="8" max="15" value="12" oninput="generateSequence()">
+                        <div class="range-value" id="terms-display">12</div>
+                    </div>
+                </div>
+                
+                <table id="sequence-table"></table>
+                
+                <div class="note">
+                    <strong>Observation:</strong> Try switching between even k (like 2, 4, 6) and odd k (like 1, 3, 5). Notice the pattern in which rows highlight (valid representations).
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>3. The Algebraic Mechanism</h2>
+            
+            <p>A real number <code>y ∈ (0,1)</code> can be written in the form</p>
+            
+            <div class="formula-box">
+y = √(M + 1) - √M    for some M ∈ ℤ≥₀
+            </div>
+
+            <div class="proof-sketch">
+                <h4>Derivation</h4>
+                <p><strong>If</strong> <code>y = √(M+1) - √M</code>, then rationalizing the denominator:</p>
+                <div class="formula-box">
+1/y = √(M+1) + √M
+                </div>
+                <p>Squaring both equations and eliminating radicals gives:</p>
+                <div class="formula-box">
+M = (y⁻² + y² - 2) / 4
+                </div>
+                <p>Conversely, if <code>M</code> is defined this way and <code>M ∈ ℤ≥₀</code>, then the representation holds.</p>
+            </div>
+
+            <p>For the metallic mean reciprocal <code>y = δₖ⁻ⁿ</code>, substituting into the formula gives:</p>
+            <div class="formula-box">
+Mₙ(k) = (δₖ²ⁿ + δₖ⁻²ⁿ - 2) / 4
+            </div>
+
+            <p><strong>Central question</strong>: When is <code>Mₙ(k)</code> a nonnegative integer?</p>
+        </section>
+
+        <section>
+            <h2>4. The Lucas Sequence Connection</h2>
+            
+            <p>Define <code>Sₙ(k) = δₖ²ⁿ + δₖ⁻²ⁿ</code>. Then <code>Mₙ(k) = (Sₙ - 2)/4</code>.</p>
+            
+            <p>Since <code>λₖ = δₖ²</code> satisfies <code>λₖ + λₖ⁻¹ = k² + 2</code>, the sequence <code>(Sₙ)</code> obeys a <strong>Lucas recurrence</strong>:</p>
+            
+            <div class="formula-box">
+Sₙ₊₁ = (k² + 2)Sₙ - Sₙ₋₁
+S₀ = 2, S₁ = k² + 2
+            </div>
+            
+            <p>Thus <code>Sₙ ∈ ℤ</code> for all <code>n</code>. The question of integrality for <code>Mₙ</code> becomes purely a <strong>congruence</strong> question:</p>
+            
+            <div class="theorem">
+                <div class="theorem-title">Integrality Criterion</div>
+                <div class="formula-box">
+Mₙ(k) ∈ ℤ  ⟺  Sₙ(k) ≡ 2 (mod 4)
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>5. Main Theorem: The Parity Phenomenon</h2>
+            
+            <div class="theorem">
+                <div class="theorem-title">Theorem (Even vs Odd k)</div>
+                <p><strong>1.</strong> If <code>k</code> is <strong>even</strong>, then <code>Mₙ(k) ∈ ℤ≥₀</code> for <em>every</em> <code>n ≥ 1</code>.</p>
+                <p><strong>2.</strong> If <code>k</code> is <strong>odd</strong>, then <code>Mₙ(k) ∈ ℤ≥₀</code> if and only if <code>3 | n</code>.</p>
+            </div>
+
+            <div class="proof-sketch">
+                <h4>Proof Sketch</h4>
+                <p>Work modulo 4 in the recurrence. Let <code>A = k² + 2</code>.</p>
+                
+                <p><strong>Case 1: k even.</strong> Then <code>k² ≡ 0 (mod 4)</code>, so <code>A ≡ 2 (mod 4)</code> and:</p>
+                <div class="formula-box">
+Sₙ₊₁ ≡ 2Sₙ - Sₙ₋₁ (mod 4)
+                </div>
+                <p>With <code>S₀ ≡ 2</code> and <code>S₁ ≡ 2</code>, induction gives <code>Sₙ ≡ 2 (mod 4)</code> for all <code>n</code>.</p>
+                
+                <p><strong>Case 2: k odd.</strong> Then <code>k² ≡ 1 (mod 4)</code>, so <code>A ≡ 3 (mod 4)</code> and:</p>
+                <div class="formula-box">
+Sₙ₊₁ ≡ 3Sₙ - Sₙ₋₁ ≡ -Sₙ - Sₙ₋₁ (mod 4)
+                </div>
+                <p>Computing: <code>S₀ ≡ 2, S₁ ≡ 3, S₂ ≡ 3, S₃ ≡ 2, ...</code></p>
+                <p>This gives a <strong>period-3 pattern</strong>: <code>2, 3, 3, 2, 3, 3, ...</code></p>
+                <p>Therefore <code>Sₙ ≡ 2 (mod 4)</code> exactly when <code>n ≡ 0 (mod 3)</code>.</p>
+            </div>
+
+            <div class="note">
+                <strong>Summary:</strong> For <strong>even k</strong> (silver, k=4, k=6,...), every power works. For <strong>odd k</strong> (golden, bronze, k=5,...), only multiples of 3 work.
+            </div>
+        </section>
+
+        <section>
+            <h2>6. Interactive Tools</h2>
+            
+            <div class="interactive-panel">
+                <div class="tabs">
+                    <button class="tab active" onclick="switchTab('calculator')">Individual Calculator</button>
+                    <button class="tab" onclick="switchTab('examples')">Concrete Examples</button>
+                </div>
+                
+                <div id="calculator" class="tab-content active">
+                    <div class="control-row">
+                        <div class="control">
+                            <label for="k-input">Parameter k</label>
+                            <input type="number" id="k-input" min="1" max="20" value="2" oninput="compute()">
+                        </div>
+                        <div class="control">
+                            <label for="n-input">Exponent n</label>
+                            <input type="number" id="n-input" min="1" max="12" value="1" oninput="compute()">
+                        </div>
+                    </div>
+                    
+                    <div class="result-grid" id="results"></div>
+                    
+                    <div class="visualization-area">
+                        <canvas id="viz-canvas"></canvas>
+                        <p class="viz-caption" id="viz-caption"></p>
+                    </div>
+                </div>
+                
+                <div id="examples" class="tab-content">
+                    <div class="example-grid">
+                        <div class="example-card metal-gold">
+                            <h4><span class="tag tag-gold">Golden Ratio</span> (k = 1)</h4>
+                            <p>Period-3 pattern (only n = 3, 6, 9, ... work):</p>
+                            <div class="formula-box">
+φ⁻³ = √5 - √4
+φ⁻⁶ = √81 - √80
+                            </div>
+                        </div>
+                        
+                        <div class="example-card metal-silver">
+                            <h4><span class="tag tag-silver">Silver Ratio</span> (k = 2)</h4>
+                            <p>All powers work:</p>
+                            <div class="formula-box">
+(√2 - 1)¹ = √2 - √1
+(√2 - 1)² = √9 - √8
+(√2 - 1)³ = √50 - √49
+(√2 - 1)⁴ = √289 - √288
+                            </div>
+                        </div>
+                        
+                        <div class="example-card metal-bronze">
+                            <h4><span class="tag tag-bronze">Bronze Ratio</span> (k = 3)</h4>
+                            <p>Period-3 pattern:</p>
+                            <div class="formula-box">
+δ₃⁻³ = √325 - √324
+δ₃⁻⁶ = √421201 - √421200
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>7. Geometric Interpretation: Cyclotomic Roots</h2>
+            
+            <div class="cyclotomic-section">
+                <h3>Why Period 3 for Odd k?</h3>
+                
+                <p>The mod-4 behavior isn't just a congruence accident—it reflects how powers of a quadratic unit project into a finite quotient ring where they behave like <strong>roots of unity</strong>.</p>
+                
+                <div class="proof-sketch">
+                    <h4>The Galois Picture</h4>
+                    <p>Let <code>K = ℚ(√D)</code> where <code>D = k² + 4</code>. Then <code>δₖ</code> is a unit of norm -1:</p>
+                    <div class="formula-box">
+N(δₖ) = δₖ · δ'ₖ = -1
+where δ'ₖ = (k - √D)/2 = -δₖ⁻¹
+                    </div>
+                    <p>The trace of <code>δₖ²ⁿ</code> is precisely <code>Sₙ = δₖ²ⁿ + δ'ₖ²ⁿ</code>.</p>
+                </div>
+                
+                <p><strong>For even k</strong>: The ring of integers is <code>ℤ[√D]</code>, and <code>k² + 2 ≡ 2 (mod 4)</code>. The characteristic polynomial of the recurrence becomes <code>(x - 1)² (mod 4)</code>, so the eigenvalue has order 1—no periodic obstruction.</p>
+                
+                <p><strong>For odd k</strong>: The ring is <code>ℤ[(1 + √D)/2]</code> (introducing a denominator-2 shift), and <code>k² + 2 ≡ 3 (mod 4)</code>. The characteristic polynomial becomes <code>x² + x + 1 (mod 4)</code>, whose roots are <strong>primitive 3rd roots of unity</strong> in the quotient ring:</p>
+                
+                <div class="formula-box">
+x³ - 1 = (x - 1)(x² + x + 1)
+                </div>
+                
+                <p>Hence the unit behaves like a cubic root of unity mod 4, producing the <strong>period-3 pattern</strong>.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>8. The Hyperbola Picture (Minkowski Embedding)</h2>
+
+            <p>The identity <code>δₖ⁻ⁿ = √(M+1) − √M</code> can be seen geometrically in a plane: set <code>x = δₖⁿ</code> and <code>y = δₖ⁻ⁿ</code>. Then <code>xy = 1</code>, so the point <code>(x,y)</code> lies on the hyperbola <code>xy = 1</code>.</p>
+
+            <div class="interactive-panel">
+                <div class="control-row">
+                    <div class="control">
+                        <label for="hyp-k">Parameter k</label>
+                        <input type="number" id="hyp-k" min="1" max="20" value="2" oninput="drawHyperbola()">
+                    </div>
+                    <div class="control">
+                        <label for="hyp-n">Exponent n</label>
+                        <input type="number" id="hyp-n" min="1" max="24" value="6" oninput="drawHyperbola()">
+                    </div>
+                    <div class="control">
+                        <label for="hyp-nmax">Show points up to N</label>
+                        <input type="range" id="hyp-nmax" min="6" max="60" value="24" oninput="drawHyperbola()">
+                        <div class="range-value" id="hyp-nmax-display">24</div>
+                    </div>
+                </div>
+
+                <div class="visualization-area">
+                    <canvas id="hyperbola-canvas"></canvas>
+                    <p class="viz-caption" id="hyperbola-caption"></p>
+                </div>
+
+                <div class="note">
+                    <strong>How to read this:</strong> each point corresponds to <code>(x,y) = (δₖⁿ, δₖ⁻ⁿ)</code> on the curve <code>xy = 1</code>. The highlighted point shows your chosen exponent <code>n</code>. For even <code>k</code>, every point corresponds to an integer <code>M</code>; for odd <code>k</code>, only every third point does.
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        function metallicMean(k) {
+            return (k + Math.sqrt(k*k + 4)) / 2;
+        }
+        
+        function computeS(n, k) {
+            const delta = metallicMean(k);
+            const lambda = delta * delta;
+            return Math.pow(lambda, n) + Math.pow(lambda, -n);
+        }
+        
+        function computeM(n, k) {
+            return (computeS(n, k) - 2) / 4;
+        }
+        
+        function isValid(n, k) {
+            return (k % 2 === 0) || (n % 3 === 0);
+        }
+        
+        function generateSequence() {
+            const k = parseInt(document.getElementById('seq-k').value);
+            const terms = parseInt(document.getElementById('seq-terms').value);
+            
+            document.getElementById('terms-display').textContent = terms;
+            
+            const delta = metallicMean(k);
+            
+            let html = `
+                <thead>
+                    <tr>
+                        <th>n</th>
+                        <th>S<sub>n</sub>(${k})</th>
+                        <th>M<sub>n</sub>(${k})</th>
+                        <th>Valid?</th>
+                        <th>δ<sub>${k}</sub><sup>-n</sup></th>
+                        <th>Representation</th>
+                    </tr>
+                </thead>
+                <tbody>
+            `;
+            
+            for (let n = 1; n <= terms; n++) {
+                const S = computeS(n, k);
+                const M = computeM(n, k);
+                const valid = isValid(n, k);
+                const deltaInvN = Math.pow(delta, -n);
+                
+                const rowClass = valid ? 'valid-row' : '';
+                const M_display = valid ? Math.round(M).toString() : M.toFixed(2);
+                const checkmark = valid ? '<span class="check">✓</span>' : '<span class="cross">✗</span>';
+                const repr = valid ? `√${Math.round(M) + 1} - √${Math.round(M)}` : '—';
+                
+                html += `
+                    <tr class="${rowClass}">
+                        <td><strong>${n}</strong></td>
+                        <td>${S.toFixed(2)}</td>
+                        <td>${M_display}</td>
+                        <td>${checkmark}</td>
+                        <td>${deltaInvN.toFixed(8)}</td>
+                        <td>${repr}</td>
+                    </tr>
+                `;
+            }
+            
+            html += '</tbody>';
+            document.getElementById('sequence-table').innerHTML = html;
+        }
+        
+        function compute() {
+            const k = parseInt(document.getElementById('k-input').value);
+            const n = parseInt(document.getElementById('n-input').value);
+            
+            const delta = metallicMean(k);
+            const deltaInvN = Math.pow(delta, -n);
+            const S = computeS(n, k);
+            const M = computeM(n, k);
+            const valid = isValid(n, k);
+            
+            const parity = k % 2 === 0 ? 'EVEN' : 'ODD';
+            const rule = k % 2 === 0 ? 'Valid for all n' : 'Valid only when 3 | n';
+            
+            let html = `
+                <div class="result-item">
+                    <div class="result-label">δ<sub>${k}</sub></div>
+                    <div class="result-value">${delta.toFixed(6)}</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">δ<sub>${k}</sub><sup>-${n}</sup></div>
+                    <div class="result-value">${deltaInvN.toFixed(8)}</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">S<sub>${n}</sub>(${k})</div>
+                    <div class="result-value">${S.toFixed(2)}</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">M<sub>${n}</sub>(${k})</div>
+                    <div class="result-value">${M.toFixed(4)} ${valid ? '<span class="status-badge valid">INTEGER</span>' : '<span class="status-badge invalid">NOT INTEGER</span>'}</div>
+                </div>
+                <div class="result-item" style="grid-column: 1 / -1;">
+                    <div class="result-label">Parity Rule (k is ${parity})</div>
+                    <div class="result-value">${rule}</div>
+                </div>
+            `;
+            
+            if (valid) {
+                const M_int = Math.round(M);
+                const repr = `√${M_int + 1} - √${M_int}`;
+                html += `
+                    <div class="result-item" style="grid-column: 1 / -1;">
+                        <div class="result-label">Representation</div>
+                        <div class="result-value">${repr} = ${deltaInvN.toFixed(10)}</div>
+                    </div>
+                `;
+            }
+            
+            document.getElementById('results').innerHTML = html;
+            drawVisualization(k, n, M, valid, deltaInvN);
+        }
+        
+        function drawVisualization(k, n, M, valid, deltaInvN) {
+            const canvas = document.getElementById('viz-canvas');
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width = canvas.offsetWidth * 2;
+            const height = canvas.height = 600;
+            ctx.scale(2, 2);
+            
+            ctx.clearRect(0, 0, width, height);
+            
+            const caption = document.getElementById('viz-caption');
+            
+            if (!valid) {
+                ctx.fillStyle = '#6b5d52';
+                ctx.font = '14px Libre Baskerville';
+                ctx.textAlign = 'center';
+                ctx.fillText('No integer representation for this (k, n) pair', width/4, height/4);
+                ctx.font = '12px Libre Baskerville';
+                ctx.fillStyle = '#999';
+                const hint = k % 2 === 0 ? 'All n work for even k' : 'Try n = 3, 6, 9, ... for odd k';
+                ctx.fillText(hint, width/4, height/4 + 25);
+                caption.textContent = '';
+                return;
+            }
+            
+            const M_int = Math.round(M);
+            const sqrtM = Math.sqrt(M_int);
+            const sqrtM1 = Math.sqrt(M_int + 1);
+            
+            // Number line visualization
+            const padding = 40;
+            const lineY = 120;
+            const maxVal = Math.max(sqrtM1, 5);
+            const scale = (width/2 - 2*padding) / maxVal;
+            
+            // Draw axis
+            ctx.strokeStyle = '#e6e1d8';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(padding, lineY);
+            ctx.lineTo(width/2 - padding, lineY);
+            ctx.stroke();
+            
+            // Tick marks
+            ctx.font = '10px JetBrains Mono';
+            ctx.fillStyle = '#999';
+            ctx.textAlign = 'center';
+            for (let i = 0; i <= Math.ceil(maxVal); i++) {
+                const x = padding + i * scale;
+                ctx.beginPath();
+                ctx.moveTo(x, lineY - 5);
+                ctx.lineTo(x, lineY + 5);
+                ctx.stroke();
+                ctx.fillText(i.toString(), x, lineY + 20);
+            }
+            
+            // Mark √M
+            const xM = padding + sqrtM * scale;
+            ctx.fillStyle = '#7a8894';
+            ctx.beginPath();
+            ctx.arc(xM, lineY, 6, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.fillStyle = '#4a5561';
+            ctx.font = '12px JetBrains Mono';
+            ctx.textAlign = 'center';
+            ctx.fillText(`√${M_int}`, xM, lineY - 15);
+            ctx.font = '10px JetBrains Mono';
+            ctx.fillText(`= ${sqrtM.toFixed(4)}`, xM, lineY - 30);
+            
+            // Mark √(M+1)
+            const xM1 = padding + sqrtM1 * scale;
+            ctx.fillStyle = '#b85a00';
+            ctx.beginPath();
+            ctx.arc(xM1, lineY, 6, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.fillStyle = '#8b4000';
+            ctx.font = '12px JetBrains Mono';
+            ctx.fillText(`√${M_int + 1}`, xM1, lineY - 15);
+            ctx.font = '10px JetBrains Mono';
+            ctx.fillText(`= ${sqrtM1.toFixed(4)}`, xM1, lineY - 30);
+            
+            // Difference bracket
+            ctx.strokeStyle = '#b85a00';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(xM, lineY + 30);
+            ctx.lineTo(xM, lineY + 40);
+            ctx.moveTo(xM, lineY + 35);
+            ctx.lineTo(xM1, lineY + 35);
+            ctx.moveTo(xM1, lineY + 30);
+            ctx.lineTo(xM1, lineY + 40);
+            ctx.stroke();
+            
+            ctx.fillStyle = '#b85a00';
+            ctx.font = '12px JetBrains Mono';
+            ctx.fillText(`δ${k}⁻${n} = ${deltaInvN.toFixed(8)}`, (xM + xM1)/2, lineY + 55);
+            
+            caption.textContent = `The difference √${M_int + 1} - √${M_int} equals the ${n}th power of 1/δ${k}`;
+        }
+        
+        function switchTab(tabName) {
+            const tabs = document.querySelectorAll('.tab');
+            const contents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+        
+        function drawHyperbola() {
+            const k = parseInt(document.getElementById('hyp-k').value);
+            const n = parseInt(document.getElementById('hyp-n').value);
+            const nMax = parseInt(document.getElementById('hyp-nmax').value);
+            document.getElementById('hyp-nmax-display').textContent = nMax;
+
+            const delta = metallicMean(k);
+
+            const canvas = document.getElementById('hyperbola-canvas');
+            const ctx = canvas.getContext('2d');
+
+            // HiDPI
+            const wCss = canvas.offsetWidth;
+            const hCss = 320;
+            canvas.style.height = hCss + "px";
+            canvas.width = Math.floor(wCss * 2);
+            canvas.height = Math.floor(hCss * 2);
+            ctx.setTransform(2, 0, 0, 2, 0, 0);
+
+            ctx.clearRect(0, 0, wCss, hCss);
+
+            // We draw in log-coordinates to keep the curve and points visible:
+            // Let u = log(x), v = log(y). Then xy=1 becomes v = -u (a line).
+            // Points (δ^m, δ^{-m}) become (m log δ, -m log δ) on that line.
+            const L = Math.log(delta);
+
+            // View window in (u,v)
+            const pad = 34;
+            const uMax = Math.max(3, nMax * L * 1.05); // ensure room
+            const uMin = -uMax;
+            const vMin = -uMax;
+            const vMax = uMax;
+
+            function UtoX(u) {
+                return pad + (u - uMin) * (wCss - 2 * pad) / (uMax - uMin);
+            }
+            function VtoY(v) {
+                // screen y is downward
+                return pad + (vMax - v) * (hCss - 2 * pad) / (vMax - vMin);
+            }
+
+            // Draw axes
+            ctx.strokeStyle = "#e6e1d8";
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            // u-axis (v=0)
+            ctx.moveTo(UtoX(uMin), VtoY(0));
+            ctx.lineTo(UtoX(uMax), VtoY(0));
+            // v-axis (u=0)
+            ctx.moveTo(UtoX(0), VtoY(vMin));
+            ctx.lineTo(UtoX(0), VtoY(vMax));
+            ctx.stroke();
+
+            // Label axes
+            ctx.fillStyle = "#6b5d52";
+            ctx.font = "12px JetBrains Mono";
+            ctx.textAlign = "left";
+            ctx.fillText("u = log x", UtoX(uMin) + 4, VtoY(0) - 8);
+            ctx.fillText("v = log y", UtoX(0) + 8, VtoY(vMax) + 14);
+
+            // Draw the hyperbola xy=1 as v=-u (a line in log-space)
+            ctx.strokeStyle = "#b85a00";
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(UtoX(uMin), VtoY(-uMin));
+            ctx.lineTo(UtoX(uMax), VtoY(-uMax));
+            ctx.stroke();
+
+            // Ticks on the line for m = 1..nMax
+            // We'll draw points (u_m, v_m) = (mL, -mL)
+            function validExponent(m, kVal) {
+                return (kVal % 2 === 0) || (m % 3 === 0);
+            }
+
+            for (let m = 1; m <= nMax; m++) {
+                const u = m * L;
+                const v = -m * L;
+
+                const x = UtoX(u);
+                const y = VtoY(v);
+
+                // Choose style: valid vs invalid
+                const ok = validExponent(m, k);
+
+                // subtle points
+                ctx.globalAlpha = ok ? 0.9 : 0.25;
+                ctx.fillStyle = ok ? "#b85a00" : "#7a8894";
+
+                ctx.beginPath();
+                ctx.arc(x, y, m === n ? 5 : 3, 0, 2 * Math.PI);
+                ctx.fill();
+            }
+            ctx.globalAlpha = 1;
+
+            // Highlight chosen point with annotation
+            const uN = n * L;
+            const vN = -n * L;
+            const xN = UtoX(uN);
+            const yN = VtoY(vN);
+
+            ctx.strokeStyle = "#1c1815";
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(xN, yN, 8, 0, 2 * Math.PI);
+            ctx.stroke();
+
+            // Caption with the actual (x,y) and the sqrt-difference representation when valid
+            const xVal = Math.pow(delta, n);
+            const yVal = Math.pow(delta, -n);
+            const okN = validExponent(n, k);
+            const M = computeM(n, k);
+            const Mtxt = okN ? `${Math.round(M)}` : `${M.toFixed(4)}`;
+
+            const caption = document.getElementById('hyperbola-caption');
+            if (okN) {
+                const Mi = Math.round(M);
+                caption.textContent =
+                    `Point (x,y) = (δₖⁿ, δₖ⁻ⁿ) lies on xy=1. Here k=${k}, n=${n}: ` +
+                    `δₖ⁻ⁿ = √${Mi + 1} − √${Mi} (M = ${Mi}).`;
+            } else {
+                caption.textContent =
+                    `Point (x,y) = (δₖⁿ, δₖ⁻ⁿ) lies on xy=1. Here k=${k}, n=${n}: ` +
+                    `M = (δₖ²ⁿ + δₖ⁻²ⁿ − 2)/4 = ${Mtxt} is not an integer, so no consecutive-surd form.`;
+            }
+        }
+        
+        // Initialize
+        generateSequence();
+        compute();
+        drawHyperbola();
+    </script>
+</body>
+</html>
